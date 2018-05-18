@@ -4,10 +4,9 @@ const _ = require('lodash');
 
 const BASEPATH = __dirname + '/../../logs/';
 
-const Logger = function(type) {
+const Logger = function(id) {
 
-  const now = moment().utc().format('YYYY-MM-DD-HH-mm');
-  this.fileName = `${now}-UTC-${type}.log`;
+  this.fileName = id + '.log';
 
   this.writing = false;
   this.queue = [];

@@ -53,4 +53,8 @@ ListManager.prototype.list = function() {
   return this._list;
 }
 
+ListManager.prototype.get = function(id) {
+  return this._list.find(i => i.id === id);
+}
+
 module.exports = ListManager;

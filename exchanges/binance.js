@@ -209,16 +209,16 @@ Trader.prototype.roundAmount = function(amount, tickSize) {
 Trader.prototype.getLotSize = function(tradeType, amount, price, callback) {
   amount = this.roundAmount(amount, this.market.minimalOrder.amount);
   if (amount < this.market.minimalOrder.amount)
-    return callback(undefined, { amount: 0, price: 0 });
+    return callback('Order amount is too small');
 
   price = this.roundAmount(price, this.market.minimalOrder.price)
   if (price < this.market.minimalOrder.price)
-    return callback(undefined, { amount: 0, price: 0 });
+    return callback('Order price is too small');
 
   if (amount * price < this.market.minimalOrder.order)
-    return callback(undefined, { amount: 0, price: 0});
+    return callback('Order lot size is too small');
 
-  callback(undefined, { amount: amount, price: price });
+  callback(undefined, { amount, price });
 }
 
 Trader.prototype.addOrder = function(tradeType, amount, price, callback) {

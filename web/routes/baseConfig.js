@@ -24,17 +24,6 @@ config.adviceWriter = {
   muteSoft: true,
 }
 
-config.backtestResultExporter = {
-  enabled: true,
-  writeToDisk: false,
-  data: {
-    stratUpdates: false,
-    roundtrips: true,
-    stratCandles: true,
-    trades: true
-  }
-}
-
 config.trader = {
   orderUpdateDelay: 1 // Number of minutes to adjust unfilled order prices
 }

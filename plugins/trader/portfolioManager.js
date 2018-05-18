@@ -221,7 +221,7 @@ Manager.prototype.buy = function(amount, price) {
     this.exchange.getLotSize('buy', amount, price, _.bind(process));
   } else {
     minimum = this.getMinimum(price);
-    process(undefined, { amount: amount, price: price });
+    process(undefined, { amount, price });
   }
 };
 
@@ -304,21 +304,21 @@ Manager.prototype.checkOrder = function() {
     this.relayOrder();
   }
 
-  var handleCancelResult = function(alreadyFilled) {
-    if(alreadyFilled)
-      return;
+  // var handleCancelResult = function(alreadyFilled) {
+  //   if(alreadyFilled)
+  //     return;
 
-    if(this.exchangeMeta.forceReorderDelay) {
-        //We need to wait in case a canceled order has already reduced the amount
-        var wait = 10;
-        log.debug(`Waiting ${wait} seconds before starting a new trade on ${this.exchangeMeta.name}!`);
+  //   if(this.exchangeMeta.forceReorderDelay) {
+  //       //We need to wait in case a canceled order has already reduced the amount
+  //       var wait = 10;
+  //       log.debug(`Waiting ${wait} seconds before starting a new trade on ${this.exchangeMeta.name}!`);
 
-        setTimeout(
-            () => this.trade(this.action, true),
-            +moment.duration(wait, 'seconds')
-        );
-        return;
-    }
+  //       setTimeout(
+  //           () => this.trade(this.action, true),
+  //           +moment.duration(wait, 'seconds')
+  //       );
+  //       return;
+  //   }
 
     this.trade(this.action, true);
   }

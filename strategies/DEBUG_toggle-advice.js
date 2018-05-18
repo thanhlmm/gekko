@@ -14,7 +14,7 @@ var method = {
   init: _.noop,
   update: _.noop,
   log: _.noop,
-  check: function() {
+  check: function(candle) {
 
     if(settings.wait > i)
       return;

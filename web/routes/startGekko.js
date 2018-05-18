@@ -1,17 +1,15 @@
 const _ = require('lodash');
 const promisify = require('tiny-promisify');
 const moment = require('moment');
-
 const pipelineRunner = promisify(require('../../core/workers/pipeline/parent'));
 const cache = require('../state/cache');
-const Logger = require('../state/logger');
 const broadcast = cache.get('broadcast');
 const apiKeyManager= cache.get('apiKeyManager');
 const gekkoManager = cache.get('gekkos');
 
 const base = require('./baseConfig');
 
-// starts an import
+// starts a live gekko
 // requires a post body with a config object
 module.exports = function *() {
   const mode = this.request.body.mode;
@@ -46,42 +44,51 @@ module.exports = function *() {
     var type = '';
   }
 
-  const id = (Math.random() + '').slice(3);
-
   let errored = false;
 
-  var logType = type;
-  if(logType === 'leech') {
+  let subType = type;
+  if(subType === 'leech') {
     if(config.trader && config.trader.enabled)
-      logType = 'tradebot';
+      subType = 'tradebot';
     else
-      logType = 'papertrader';
+      subType = 'papertrader';
   }
-  const logger = new Logger(logType);
 
   console.log('Gekko', id, 'started');
 
+  const gekkoObject = {
+    id,
+    type,
+    config,
+    mode,
+    subType
+  }
+
+  const handler = gekkoManager.add(gekkoObject);
+
   const child = pipelineRunner(mode, config, (err, event) => {
 
-    if(err) {
-      if(errored)
-        return;
+    // if(err) {
+    //   if(errored)
+    //     return;
 
-      let deleted = gekkoManager.delete(id);
+    //   let deleted = gekkoManager.delete(id);
 
-      if(!deleted)
-        // it was already deleted
-        return;
+    //   if(!deleted)
+    //     // it was already deleted
+    //     return;
 
-      errored = true;
-      console.error('RECEIVED ERROR IN GEKKO', id);
-      console.error(err);
-      return broadcast({
-        type: 'gekko_error',
-        gekko_id: id,
-        error: err
-      });
-    }
+    //   errored = true;
+
+    //   gekkoManager.handleFatalError()
+    //   console.error('RECEIVED ERROR IN GEKKO', id);
+    //   console.error(err);
+    //   return broadcast({
+    //     type: 'fatal_error',
+    //     gekko_id: id,
+    //     error: err
+    //   });
+    // }
 
     if(event && event.log)
       return logger.write(event.log);

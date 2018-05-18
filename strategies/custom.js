@@ -10,6 +10,12 @@
 
 var log = require('../core/log');
 
+var fs = require('fs');
+
+var moment = require('moment');
+
+const FILE = `~/Desktop/food-for-ml-model-${moment.format()}.csv`;
+
 // Let's create our own strat
 var strat = {};
 
@@ -18,16 +24,32 @@ strat.init = function() {
   this.input = 'candle';
   this.currentTrend = 'long';
   this.requiredHistory = 0;
+
+  fs.writeFileSync(FILE, '');
 }
 
 // What happens on every new candle?
 strat.update = function(candle) {
 
   // Get a random number between 0 and 1.
-  this.randomNumber = Math.random();
+  // this.randomNumber = Math.random();
 
   // There is a 10% chance it is smaller than 0.1
-  this.toUpdate = this.randomNumber < 0.1;
+  // this.toUpdate = this.randomNumber < 0.1;
+
+  var line = [
+    candle.start.unix(),
+    candle.open,
+    candle.low,
+    candle.high,
+    candle.close,
+    candle.vwp,
+    candle.trades
+  ].join(',') + '\n';
+
+  fs.appendFileSync(FILE, line);
+
+  console.log(candle.start.unix());
 }
 
 // For debugging purposes.

@@ -35,10 +35,16 @@ export default {
         {
           importer: {
             daterange: this.range
-          }
+          },
         },
         {
           candleWriter: { enabled: true }
+        },
+        {
+          childToParent: {
+            enabled: true,
+            events: ['marketUpdate']
+          }
         }
       );
 
