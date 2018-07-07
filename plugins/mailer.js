@@ -119,6 +119,16 @@ Mailer.prototype.processAdvice = function(advice) {
   this.mail(subject, text);
 };
 
+Mailer.prototype.processNotification = function({ content }) {
+  const subject = `New notification from ${config.tradingAdvisor.method}`;
+  const text = [
+    'Gekko received new notification :\n\n',
+    content
+  ].join('');
+
+  this.mail(subject, text);
+}
+
 Mailer.prototype.checkResults = function(err) {
   if(err)
     log.warn('error sending email', err);
