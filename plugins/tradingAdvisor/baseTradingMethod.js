@@ -228,8 +228,8 @@ Base.prototype.advice = function(newPosition) {
   });
 }
 
-Base.prototype.notice = function(content) {
-  this.emit('notification', {
+Base.prototype.notify = function(content) {
+  this.emit('stratNotification', {
     content,
     date: new Date(),
   })

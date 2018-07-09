@@ -41,8 +41,8 @@ var subscriptions = [
   },
   {
     emitter: 'tradingAdvisor',
-    event: 'notification',
-    handler: 'processNotification'
+    event: 'stratNotification',
+    handler: 'processStratNotification'
   },
   {
     emitter: ['trader', 'paperTrader'],

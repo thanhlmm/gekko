@@ -44,7 +44,7 @@ Slack.prototype.processAdvice = function(advice) {
   this.send(body);
 };
 
-Slack.prototype.processNotification = function({ content }) {
+Slack.prototype.processStratNotification = function({ content }) {
   const body = this.createResponse('#909399', content);
   this.send(body);
 }
